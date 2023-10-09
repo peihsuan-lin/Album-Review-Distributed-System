@@ -1,5 +1,6 @@
 package part2;
 
+import com.ibm.hbpe.HistogramBasedPercentileEstimator;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -58,18 +59,20 @@ public class RecordWriter {
     if (records.isEmpty()) {
       throw new IllegalArgumentException("No records to calculate");
     }
+    HistogramBasedPercentileEstimator hbpe = new HistogramBasedPercentileEstimator(1);
     double min = Double.MAX_VALUE, max = Double.MIN_VALUE, sum = 0;
     double median = records.get((int) (0.5 * records.size())).getLatency();
-    double p99 = records.get((int) (0.99 * records.size())).getLatency();
 
     for (Record r : records) {
       sum += r.getLatency();
+      hbpe.addValue(r.getLatency());
       max = Math.max(max, r.getLatency());
       min = Math.min(min, r.getLatency());
       writer.write(r.toString() + "\n");
     }
     writer.flush();
     double mean = sum / records.size();
+    double p99 = hbpe.getPercentile(99.0);
 
     System.out.println("\nMetrics for " + requestType + ":");
     System.out.println(

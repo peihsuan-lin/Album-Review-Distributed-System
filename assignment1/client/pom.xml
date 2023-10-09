@@ -57,10 +57,23 @@
       <artifactId>gson</artifactId>
       <version>2.10.1</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.ibm.hbpe/hbpe -->
+    <dependency>
+      <groupId>com.ibm.hbpe</groupId>
+      <artifactId>hbpe</artifactId>
+      <version>1.0.3</version>
+    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.source>13</maven.compiler.source>
     <maven.compiler.target>13</maven.compiler.target>
   </properties>
+  <!-- Add jcenter as a repository for dependencies -->
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+  </repositories>
 
 </project>
