@@ -1,0 +1,8 @@
+connections/RMQConn.class
+rabbitmq/RMQChannelFactory.class
+DBHandler.class
+AlbumReviewConsumerService.class
+rabbitmq/RMQManager.class
+AlbumReviewConsumer.class
+ReviewMessage.class
+connections/DynamoConn.class
