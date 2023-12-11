@@ -31,7 +31,8 @@ public class ReviewClient implements Runnable {
         try {
 //           GET REVIEW API
           long getReviewStart = System.currentTimeMillis();
-          Likes likes = likeClient.getLikes("id");
+          String albumId = MultiThreadClient.existingAlbumIds.take();
+          Likes likes = likeClient.getLikes(albumId);
           long getReviewEnd = System.currentTimeMillis();
           records.add(new Record(getReviewStart, "GET_REVIEW", getReviewEnd - getReviewStart, 201));
           numOfSuccessReq.incrementAndGet();
