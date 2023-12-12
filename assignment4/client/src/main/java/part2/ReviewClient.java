@@ -16,8 +16,7 @@ public class ReviewClient implements Runnable {
   private CountDownLatch completed;
   private static ConcurrentLinkedQueue<Record> records = new ConcurrentLinkedQueue<>();
 
-  public ReviewClient(int numRequests, String IPAddr, CountDownLatch completed) {
-    this.numRequests = numRequests;
+  public ReviewClient(String IPAddr, CountDownLatch completed) {
     this.IPAddr = IPAddr;
     this.completed = completed;
   }
@@ -25,7 +24,8 @@ public class ReviewClient implements Runnable {
   @Override
   public void run() {
     LikeApi likeClient = new LikeApi();
-    for (int i = 0; i < numRequests; i++) {
+    // run GET until all POST requests are completed
+    while (this.completed.getCount() > 0) {
       boolean success = false;
       for (int j = 0; j < MAX_RETRY; j++) {
         try {
