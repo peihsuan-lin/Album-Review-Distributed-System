@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -28,7 +29,7 @@ public class AlbumReviewConsumer implements Runnable {
       consumer.subscribe(Arrays.asList("likes-topic", "dislikes-topic"));
 
       while (true) {
-        ConsumerRecords<String, String> records = consumer.poll(100);
+        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
         for (ConsumerRecord<String, String> record : records) {
           ReviewMessage reviewMessage = gson.fromJson(record.value(), ReviewMessage.class);
           dbHandler.storeReviewInDb(reviewMessage);

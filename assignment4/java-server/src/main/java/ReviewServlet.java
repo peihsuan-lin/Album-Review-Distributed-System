@@ -24,7 +24,7 @@ public class ReviewServlet extends HttpServlet {
     super.init(config);
     albumDao = new AlbumDaoImpl();
     Properties props = new Properties();
-    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9093");
+    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     producer = new KafkaProducer<>(props);
@@ -56,7 +56,7 @@ public class ReviewServlet extends HttpServlet {
   }
 
   private void sendMessageToKafka(String jsonMessage, String likeOrNot) throws Exception {
-    String topic = likeOrNot.equals("like") ? "like-topic" : "dislike-topic";
+    String topic = likeOrNot.equals("like") ? "likes-topic" : "dislikes-topic";
     producer.send(new ProducerRecord<>(topic, jsonMessage.toString()));
     System.out.println("Sending message to Kafka topic " + topic + ": " + jsonMessage);
   }
