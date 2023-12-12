@@ -21,7 +21,7 @@ public class AlbumReviewConsumer implements Runnable {
   @Override
   public void run() {
     Properties props = new Properties();
-    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "35.90.18.65:9092");
     props.put(ConsumerConfig.GROUP_ID_CONFIG, "album-review-consumer-group");
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());

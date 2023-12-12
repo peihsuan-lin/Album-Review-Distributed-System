@@ -1,0 +1,5 @@
+AlbumReviewConsumer.class
+DBHandler.class
+AlbumReviewConsumerService.class
+ReviewMessage.class
+connections/DynamoConn.class

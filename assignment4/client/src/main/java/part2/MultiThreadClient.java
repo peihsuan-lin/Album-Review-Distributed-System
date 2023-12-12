@@ -19,7 +19,7 @@ public class MultiThreadClient {
     this.numThreadGroups = numThreadGroups;
     this.delay = delay;
 //    this.url = "http://localhost:8080/server/AlbumStore";
-    this.url = "http://ec2-34-222-129-215.us-west-2.compute.amazonaws.com:8080/java-server/AlbumStore";
+    this.url = "http://ec2-54-188-214-24.us-west-2.compute.amazonaws.com:8080/java-server-archive/AlbumStore";
   }
 
 

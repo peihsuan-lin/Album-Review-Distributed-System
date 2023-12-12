@@ -39,7 +39,7 @@ public class ReviewClient implements Runnable {
           success = true;
           break;
         } catch (Exception e) {
-          System.out.println("Exception: " + e.getMessage());
+          e.printStackTrace();
         }
       }
       if (!success) {
