@@ -51,8 +51,8 @@ public class AlbumDaoImpl implements AlbumDao {
 
   @Override
   public ReviewResponse getReviewCountById(String id) {
-    String likeCount = getCountFromTable("likeTable", id);
-    String dislikeCount = getCountFromTable("dislikeTable", id);
+    String likeCount = getCountFromTable("LikeTable", id);
+    String dislikeCount = getCountFromTable("DislikeTable", id);
     ReviewResponse reviewResponse = new ReviewResponse();
     reviewResponse.setLikes(likeCount);
     reviewResponse.setDislikes(dislikeCount);
@@ -69,8 +69,8 @@ public class AlbumDaoImpl implements AlbumDao {
 
     GetItemResponse response = dynamoDbClient.getItem(request);
 
-    if (response.item() != null && response.item().containsKey("count")) {
-      return response.item().get("count").n();
+    if (response.item() != null && response.item().containsKey("review_count")) {
+      return response.item().get("review_count").n();
     }
     return "0";
   }

@@ -24,7 +24,7 @@ public class ReviewServlet extends HttpServlet {
     super.init(config);
     albumDao = new AlbumDaoImpl();
     Properties props = new Properties();
-    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "35.90.18.65:9092");
+    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "35.90.242.198:9092");
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     producer = new KafkaProducer<>(props);
@@ -78,20 +78,21 @@ public class ReviewServlet extends HttpServlet {
   }
 
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse res) {
+  protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
     res.setContentType("application/json");
     String urlPath = req.getPathInfo();
     String[] urlParts = urlPath.split("/");
-    String id = urlParts[2];
+    System.out.println(urlParts.length);
+    String id = urlParts[1];
     ReviewResponse response = albumDao.getReviewCountById(id);
     Gson gson = new Gson();
     String responseJson = gson.toJson(response);
-    try {
+    if (responseJson != null || !responseJson.isEmpty()) {
       res.setStatus(HttpServletResponse.SC_OK);
       res.getOutputStream().print(responseJson);
       res.getOutputStream().flush();
-    } catch (IOException e) {
-      e.printStackTrace();
+    } else {
+      sendErrorResponse(res);
     }
   }
 }
