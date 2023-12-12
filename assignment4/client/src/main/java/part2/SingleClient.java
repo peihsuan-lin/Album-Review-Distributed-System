@@ -7,6 +7,8 @@ import io.swagger.client.model.AlbumsProfile;
 import io.swagger.client.model.ImageMetaData;
 import io.swagger.client.model.Likes;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,6 +22,7 @@ public class SingleClient implements Runnable {
   private final int MAX_RETRY = 5;
   private CountDownLatch completed;
   private static ConcurrentLinkedQueue<Record> records = new ConcurrentLinkedQueue<>();
+  private final List<String> albumIds = new ArrayList<>();
 
 
   public SingleClient(int numRequests, String IPAddr, CountDownLatch completed) {
@@ -55,6 +58,9 @@ public class SingleClient implements Runnable {
           long postReviewEnd = System.currentTimeMillis();
           records.add(new Record(postReviewStart, "POST_REVIEW", postReviewEnd - postReviewStart, 201));
 
+          // update albumIds
+          albumIds.add(imageMetaData.getAlbumID());
+
           numOfSuccessReq.incrementAndGet();
           success = true;
           completed.countDown();
@@ -68,6 +74,9 @@ public class SingleClient implements Runnable {
         completed.countDown();
       }
     }
+
+    // update existingAlbumIds after requests finish
+    MultiThreadClient.existingAlbumIds.addAll(albumIds);
 }
 
   public static ConcurrentLinkedQueue<Record> getRecords() {

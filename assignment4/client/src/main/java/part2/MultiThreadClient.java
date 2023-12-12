@@ -1,7 +1,9 @@
 package part2;
 
 import java.io.IOException;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class MultiThreadClient {
 
@@ -10,13 +12,14 @@ public class MultiThreadClient {
   private static int delay;
   private static String url;
 
+  protected static BlockingQueue<String> existingAlbumIds = new LinkedBlockingQueue<>();
+
   public MultiThreadClient(int threadGroupSize, int numThreadGroups, int delay, String url) {
     this.threadGroupSize = threadGroupSize;
     this.numThreadGroups = numThreadGroups;
     this.delay = delay;
 //    this.url = "http://localhost:8080/server/AlbumStore";
     this.url = "http://ec2-34-222-129-215.us-west-2.compute.amazonaws.com:8080/java-server/AlbumStore";
-
   }
 
 
