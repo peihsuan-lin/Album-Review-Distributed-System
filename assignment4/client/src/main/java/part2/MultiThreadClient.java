@@ -37,7 +37,7 @@ public class MultiThreadClient {
       t.start();
     }
     completed.await();
-    CountDownLatch groupLatch = new CountDownLatch(threadGroupSize * numThreadGroups * APIREQUEST1 + GETREVIEWTHREADS);
+    CountDownLatch groupLatch = new CountDownLatch(threadGroupSize * numThreadGroups * APIREQUEST1);
 
     long start = System.currentTimeMillis();
     for (int i = 0; i < numThreadGroups; i++) {
@@ -46,9 +46,11 @@ public class MultiThreadClient {
         t.start();
       }
       if (i == 0) {
-        Thread t2 = new Thread(new ReviewClient(GETREVIEWTHREADS, url, groupLatch));
-        // TODO: t2 await
-        t2.start();
+        // start 3 GET_REVIEW threads
+        for (int j = 0; j < GETREVIEWTHREADS; j++) {
+          Thread t2 = new Thread(new ReviewClient(url, groupLatch));
+          t2.start();
+        }
 
       }
       Thread.sleep(delay);
@@ -65,11 +67,21 @@ public class MultiThreadClient {
     int numOfRequests =
         SingleClient.getNumOfSuccessReq().get() + SingleClient.getNumOfFailReq().get();
     double throughput = (numOfRequests) / walltime;
+    double getThroughput = ReviewClient.getNumOfSuccessReq().get() / walltime;
 
     System.out.println("Number of successful requests: " + SingleClient.getNumOfSuccessReq());
     System.out.println("Number of fail requests: " + SingleClient.getNumOfFailReq());
     System.out.println("Walltime: " + walltime + " seconds");
     System.out.println("Total throughput: " + throughput + " req/s");
+
+    // GET metrics
+    System.out.println("----------------------------------");
+    System.out.println("GET metrics:");
+    System.out.println("Number of successful requests: " + ReviewClient.getNumOfSuccessReq());
+    System.out.println("Number of fail requests: " + ReviewClient.getNumOfFailReq());
+    System.out.println("Walltime: " + walltime + " seconds");
+    System.out.println("Total throughput: " + getThroughput  + " req/s");
+
     writeRecordsToFile();
   }
 
